@@ -16,22 +16,24 @@ export default class Form extends Component {
     }
     componentDidMount() {
         let data = JSON.parse(localStorage.getItem('list'));
-        this.setState({ alllist: data });
+        this.setState({ alllist: data });        
+    }
+    Edit(e){
+        let answer = localStorage.key(1);
+        var list = { name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, pass: e.target.pass.value }
+        localStorage.setItem("list", JSON.stringify(alllist))
     }
     onSubmit(e) {
         e.preventDefault();
         if (localStorage.length > 0) {
             var alllist = JSON.parse(localStorage.getItem('list'));
-            console.log(alllist);
         }  else {
             alllist = [];
         }     
         var list = { name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, pass: e.target.pass.value }
         alllist.push(list);
         localStorage.setItem("list", JSON.stringify(alllist))
-        console.log(alllist);
     }
-
     render() {
         return (
             <div className="container">
@@ -58,15 +60,17 @@ export default class Form extends Component {
                     <div className='row'>
                         <h3 className='col-md-3'>Name</h3>
                         <h3 className='col-md-3'>Email</h3>
-                        <h3 className='col-md-3'>Role</h3>
-                        <h3 className='col-md-3'>Password</h3>
+                        <h3 className='col-md-2'>Role</h3>
+                        <h3 className='col-md-2'>Password</h3>
+                        <h3 className='col-md-2'>Edit</h3>
                     </div>
                     {this.state.alllist.map(item => (
                         <div className='row'>
                             <p className='col-md-3'>{item.name}</p>
                             <p className='col-md-3'>{item.email}</p>
-                            <p className='col-md-3'>{item.phone}</p>
-                            <p className='col-md-3'>{item.pass}</p>
+                            <p className='col-md-2'>{item.phone}</p>
+                            <p className='col-md-2'>{item.pass}</p>
+                            <button className=' btn btn-success col-md-2' onClick={this.Edit}>Edit</button>
                         </div>
                     ))}
                 </div>
