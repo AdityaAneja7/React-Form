@@ -4,11 +4,11 @@ export default class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            alllist: [],
             name: '',
             email: '',
             phone: '',
-            pass: ''
+            pass: '',
+            alllist: []
         }
     }
     handleChange = (e) => {
@@ -19,17 +19,17 @@ export default class Form extends Component {
         this.setState({ alllist: data });
     }
     onSubmit(e) {
-        debugger
         e.preventDefault();
         if (localStorage.length > 0) {
-            var alllist = [JSON.parse(localStorage.getItem('list'))];
-        }
-        else {
+            var alllist = JSON.parse(localStorage.getItem('list'));
+            console.log(alllist);
+        }  else {
             alllist = [];
-        }
-        var list = { name: this.state.name, email: this.state.email, phone: this.state.phone, pass: this.state.pass }
+        }     
+        var list = { name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, pass: e.target.pass.value }
         alllist.push(list);
         localStorage.setItem("list", JSON.stringify(alllist))
+        console.log(alllist);
     }
 
     render() {
