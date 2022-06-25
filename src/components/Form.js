@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-export default class Form extends Component {
+export default class Form extends Component {    
 
     constructor(props) {
         super(props);
@@ -16,27 +16,41 @@ export default class Form extends Component {
     }
     componentDidMount() {
         let data = JSON.parse(localStorage.getItem('list'));
-        this.setState({ alllist: data });        
+        this.setState({ alllist: data });
     }
-    Edit(e){
-        let answer = localStorage.key(1);
-        var list = { name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, pass: e.target.pass.value }
-        localStorage.setItem("list", JSON.stringify(alllist))
+    onEdit = (name,email,phone,pass) => {       
+        console.log(name,email,phone,pass);
+        this.setState( {
+        name: name,
+        email: email,
+        phone: phone,
+        pass: pass})
+
+    }
+    onDelete=(email)=> {
+        localStorage.removeItem(email);
+
+
+        // Storing key present at 0th index
+        // var key = localStorage.key(0);         
+        // Removing key at 0th index
+        // localStorage.removeItem(key);
     }
     onSubmit(e) {
         e.preventDefault();
         if (localStorage.length > 0) {
             var alllist = JSON.parse(localStorage.getItem('list'));
-        }  else {
+        } else {
             alllist = [];
-        }     
+        }
         var list = { name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, pass: e.target.pass.value }
         alllist.push(list);
-        localStorage.setItem("list", JSON.stringify(alllist))
+        localStorage.setItem("list", JSON.stringify(alllist));
     }
     render() {
-        return (
-            <div className="container">
+        return (<>
+                <div className="container">
+                <h2>Enter The Details Here </h2>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Name</label>
@@ -56,25 +70,33 @@ export default class Form extends Component {
                     </div>
                     <button type="submit" className="btn btn-primary btn-block my-2">Submit</button>
                 </form>
-                <div className='my-5'>
-                    <div className='row'>
-                        <h3 className='col-md-3'>Name</h3>
-                        <h3 className='col-md-3'>Email</h3>
-                        <h3 className='col-md-2'>Role</h3>
-                        <h3 className='col-md-2'>Password</h3>
-                        <h3 className='col-md-2'>Edit</h3>
-                    </div>
+                <h2 className='my-3'>Details Table</h2>
+                <table className='table'>
+                    <thead>
+                        <tr className='table-info'>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Password</th>
+                            <th> Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
                     {this.state.alllist.map(item => (
-                        <div className='row'>
-                            <p className='col-md-3'>{item.name}</p>
-                            <p className='col-md-3'>{item.email}</p>
-                            <p className='col-md-2'>{item.phone}</p>
-                            <p className='col-md-2'>{item.pass}</p>
-                            <button className=' btn btn-success col-md-2' onClick={this.Edit}>Edit</button>
-                        </div>
+                        <tbody>
+                            <tr>
+                                <td>{item.name}</td>
+                                <td>{item.email}</td>
+                                <td >{item.phone}</td>
+                                <td >{item.pass}</td>
+                                <td><button className='btn btn-success ' onClick={() => this.onEdit(item.name,item.email,item.phone,item.pass)} >Edit</button></td>
+                                <td><button className='btn btn-danger' onClick={() => this.onDelete(item.email)}>Delete</button> </td>
+                            </tr>
+                        </tbody>
                     ))}
-                </div>
+                </table>
             </div>
+            </>
         )
     }
 }
