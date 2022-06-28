@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-export default class Form extends Component {    
+var alllist = [];
+export default class Form extends Component {
 
     constructor(props) {
         super(props);
@@ -18,23 +19,20 @@ export default class Form extends Component {
         let data = JSON.parse(localStorage.getItem('list'));
         this.setState({ alllist: data });
     }
-    onEdit = (name,email,phone,pass) => {       
-        console.log(name,email,phone,pass);
-        this.setState( {
-        name: name,
-        email: email,
-        phone: phone,
-        pass: pass})
-
+    onEdit = (name, email, phone, pass) => {
+        console.log(name, email, phone, pass);
+        this.setState({
+            name: name,
+            email: email,
+            phone: phone,
+            pass: pass
+        })
+        localStorage.setItem("list", JSON.stringify(alllist));
     }
-    onDelete=(email)=> {
-        localStorage.removeItem(email);
-
-
-        // Storing key present at 0th index
-        // var key = localStorage.key(0);         
-        // Removing key at 0th index
-        // localStorage.removeItem(key);
+    onDelete = (ind) => {
+        let xyz = this.state.alllist;
+        xyz.splice(ind, 1);
+        this.setState({ alllist: xyz })
     }
     onSubmit(e) {
         e.preventDefault();
@@ -49,7 +47,7 @@ export default class Form extends Component {
     }
     render() {
         return (<>
-                <div className="container">
+            <div className="container">
                 <h2>Enter The Details Here </h2>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -89,14 +87,17 @@ export default class Form extends Component {
                                 <td>{item.email}</td>
                                 <td >{item.phone}</td>
                                 <td >{item.pass}</td>
-                                <td><button className='btn btn-success ' onClick={() => this.onEdit(item.name,item.email,item.phone,item.pass)} >Edit</button></td>
+                                <td><button className='btn btn-success ' onClick={() => this.onEdit(item.name, item.email, item.phone, item.pass)} >Edit</button></td>
                                 <td><button className='btn btn-danger' onClick={() => this.onDelete(item.email)}>Delete</button> </td>
                             </tr>
                         </tbody>
                     ))}
                 </table>
+                <a href='\Login'>
+                <button className='btn btn-info'>Login</button> </a>
+            
             </div>
-            </>
+        </>
         )
     }
 }
