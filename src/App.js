@@ -95,8 +95,7 @@ getCartTotal=()=>{
       <div style={{padding:10,fontSize:30}}>
     Total Amount = Rs {this.getCartTotal()}
     </div>
-    </div>
-  
+    </div>  
     </>
   );
 }
